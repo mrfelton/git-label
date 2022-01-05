@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.createSuccessHandler = createSuccessHandler;
 exports.deleteSuccessHandler = deleteSuccessHandler;
 exports.errorHandler = errorHandler;
+
 /**
  * Formats and returns a response for the createSuccess event
  *
@@ -15,9 +16,8 @@ exports.errorHandler = errorHandler;
  * @return {String} success message
  */
 function createSuccessHandler(response) {
-  return "Successfully created " + response.length + " labels";
+  return "Successfully created ".concat(response.length, " labels");
 }
-
 /**
  * Formats and returns a response for the deleteSuccess event
  *
@@ -26,10 +26,11 @@ function createSuccessHandler(response) {
  * @param (Object} the response object from the server
  * @return {String} success message
  */
-function deleteSuccessHandler(response) {
-  return "Successfully deleted " + response.length + " labels";
-}
 
+
+function deleteSuccessHandler(response) {
+  return "Successfully deleted ".concat(response.length, " labels");
+}
 /**
  * Formats, logs and returns a response an error event
  *
@@ -38,6 +39,8 @@ function deleteSuccessHandler(response) {
  * @param (Object} the response object from the server
  * @return {String} error message
  */
+
+
 function errorHandler(response) {
   console.log(response);
   return response;

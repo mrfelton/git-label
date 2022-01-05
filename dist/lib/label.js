@@ -1,20 +1,18 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createLabel = createLabel;
-exports.deleteLabel = deleteLabel;
-exports.getLabels = getLabels;
-exports.formatLabel = formatLabel;
 exports.createLabels = createLabels;
+exports.deleteLabel = deleteLabel;
 exports.deleteLabels = deleteLabels;
+exports.formatLabel = formatLabel;
+exports.getLabels = getLabels;
 
-var _request = require('../lib/request');
+var _request = _interopRequireDefault(require("../lib/request"));
 
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * Sends a request to GitHub to create a label
@@ -27,22 +25,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {String} server.repo the git repo to manipulate
  * @param {String} name the name of the label
  * @param {String} color the hexidecimal color of the label
+ * @param {String} description the description of the label
  * @return {Promise}
  */
-function createLabel(_ref, name, color) {
-  var api = _ref.api;
-  var token = _ref.token;
-  var repo = _ref.repo;
-
-  return (0, _request2.default)({
-    headers: { 'User-Agent': 'request', 'Authorization': 'token ' + token },
-    url: api + '/' + repo + '/labels',
-    form: JSON.stringify({ name: name, color: color }),
+function createLabel(_ref, name, color, description) {
+  var api = _ref.api,
+      token = _ref.token,
+      repo = _ref.repo;
+  return (0, _request["default"])({
+    headers: {
+      'User-Agent': 'request',
+      'Authorization': "token ".concat(token),
+      'Accept': 'text/html, application/vnd.github.symmetra-preview+json'
+    },
+    url: "".concat(api, "/").concat(repo, "/labels"),
+    form: JSON.stringify({
+      name: name,
+      color: color,
+      description: description
+    }),
     method: 'POST',
     json: true
   });
 }
-
 /**
  * Sends a request to GitHub to delete a label
  *
@@ -55,19 +60,22 @@ function createLabel(_ref, name, color) {
  * @param {String} name the name of the label to delete
  * @return {Promise}
  */
-function deleteLabel(_ref2, name) {
-  var api = _ref2.api;
-  var token = _ref2.token;
-  var repo = _ref2.repo;
 
-  return (0, _request2.default)({
-    headers: { 'User-Agent': 'request', 'Authorization': 'token ' + token },
-    url: api + '/' + repo + '/labels/' + name,
+
+function deleteLabel(_ref2, name) {
+  var api = _ref2.api,
+      token = _ref2.token,
+      repo = _ref2.repo;
+  return (0, _request["default"])({
+    headers: {
+      'User-Agent': 'request',
+      'Authorization': "token ".concat(token)
+    },
+    url: "".concat(api, "/").concat(repo, "/labels/").concat(name),
     method: 'DELETE',
     json: true
   });
 }
-
 /**
  * Retrieves a list of labels from Github
  *
@@ -79,19 +87,22 @@ function deleteLabel(_ref2, name) {
  * @param {String} server.repo the git repo to manipulate
  * @return {Promise}
  */
-function getLabels(_ref3) {
-  var api = _ref3.api;
-  var token = _ref3.token;
-  var repo = _ref3.repo;
 
-  return (0, _request2.default)({
-    headers: { 'User-Agent': 'request', 'Authorization': 'token ' + token },
-    url: api + '/' + repo + '/labels',
+
+function getLabels(_ref3) {
+  var api = _ref3.api,
+      token = _ref3.token,
+      repo = _ref3.repo;
+  return (0, _request["default"])({
+    headers: {
+      'User-Agent': 'request',
+      'Authorization': "token ".concat(token)
+    },
+    url: "".concat(api, "/").concat(repo, "/labels"),
     method: 'GET',
     json: true
   });
 }
-
 /**
  * Properly formats an object for a label for a GitHub request
  *
@@ -99,15 +110,21 @@ function getLabels(_ref3) {
  * @function
  * @param {String} name the name of the label
  * @param {String} color the hexidecimal color of the label
+ * @param {String} description the description of the label
  * @return {Object} a properly formated label object that can be sent to GitHub
  */
+
+
 function formatLabel(_ref4) {
-  var name = _ref4.name;
-  var color = _ref4.color;
-
-  return { name: name, color: color.replace('#', '') };
+  var name = _ref4.name,
+      color = _ref4.color,
+      description = _ref4.description;
+  return {
+    name: name,
+    description: description,
+    color: color.replace('#', '')
+  };
 }
-
 /**
  * Prepares and sends a request to GitHub to create multiple labels
  *
@@ -120,14 +137,16 @@ function formatLabel(_ref4) {
  * @param {array} labels an array of objects containing data to be formatted and sent to GitHub
  * @return {Promise}
  */
+
+
 function createLabels(server, labels) {
   return Promise.all(labels.map(formatLabel).map(function (_ref5) {
-    var name = _ref5.name;
-    var color = _ref5.color;
-    return createLabel(server, name, color);
+    var name = _ref5.name,
+        color = _ref5.color,
+        description = _ref5.description;
+    return createLabel(server, name, color, description);
   }));
 }
-
 /**
  * Deletes all of the current labels associated with the GitHub repo
  *
@@ -139,10 +158,12 @@ function createLabels(server, labels) {
  * @param {String} server.repo the git repo to manipulate
  * @return {Promise}
  */
+
+
 function deleteLabels(server, labels) {
   return Promise.all(labels.map(formatLabel).map(function (_ref6) {
-    var name = _ref6.name;
-    var color = _ref6.color;
+    var name = _ref6.name,
+        color = _ref6.color;
     return deleteLabel(server, name);
   }));
 }

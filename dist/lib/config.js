@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.configure = configure;
+
 /**
  * Configures and returns an object with the git server settings
  *
@@ -16,13 +17,12 @@ exports.configure = configure;
  * @return {Object} structured server configuration object
  */
 function configure(_ref) {
-  var api = _ref.api;
-  var token = _ref.token;
-  var repo = _ref.repo;
-
+  var api = _ref.api,
+      token = _ref.token,
+      repo = _ref.repo;
   return {
     api: api,
-    repo: "repos/" + repo,
+    repo: "repos/".concat(repo),
     token: token
   };
 }

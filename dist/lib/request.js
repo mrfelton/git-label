@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = requestPromisfied;
+exports["default"] = requestPromisfied;
 
-var _request = require('request');
+var _request = _interopRequireDefault(require("request"));
 
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * Creates a "Promisfied" HTTPRequest object
@@ -21,10 +19,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 function requestPromisfied(options) {
   return new Promise(function (resolve, reject) {
-    (0, _request2.default)(options, function (err, res) {
+    (0, _request["default"])(options, function (err, res) {
       if (err) {
         reject(err);
       }
+
       resolve(res.body);
     });
   });
